@@ -1,0 +1,11 @@
+[lib]
+crate-type =["cdylib"]
+
+[package]
+name = "visitorcheck"
+version = "0.1.0"
+authors = ["Eduardo Tongson <propolice@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+ureq = { version = "1.5.2", default-features = false, features = ["tls"] }

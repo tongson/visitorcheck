@@ -1,11 +1,13 @@
 use std::ffi::{CStr, CString};
 use std::os::raw::c_char;
 use std::io::Read;
+use std::panic;
 
 extern crate ureq;
 
 #[no_mangle]
 pub extern "C" fn score(c: *const c_char) -> *const c_char {
+  panic::set_hook(Box::new(move |_| eprintln!("panic: visitorcheck.score()")));
   let cb = unsafe { CStr::from_ptr(c).to_string_lossy().into_owned() };
   let req = format!("https://tool.nodehost.cloud/visitorcheck/?action=report&key={}", cb);
   let get = ureq::get(&req).call();

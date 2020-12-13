@@ -1,6 +1,6 @@
 use std::ffi::{CStr, CString};
-use std::os::raw::c_char;
 use std::io::Read;
+use std::os::raw::c_char;
 use std::panic;
 
 extern crate ureq;
@@ -9,7 +9,10 @@ extern crate ureq;
 pub extern "C" fn score(c: *const c_char) -> *const c_char {
   panic::set_hook(Box::new(move |_| eprintln!("panic: visitorcheck.score()")));
   let cb = unsafe { CStr::from_ptr(c).to_string_lossy().into_owned() };
-  let req = format!("https://tool.nodehost.cloud/visitorcheck/?action=report&key={}", cb);
+  let req = format!(
+    "https://tool.nodehost.cloud/visitorcheck/?action=report&key={}",
+    cb
+  );
   let get = ureq::get(&req).call();
   // Process response
   let mut bytes = vec![];
@@ -23,6 +26,5 @@ pub extern "C" fn score(c: *const c_char) -> *const c_char {
   let c_str = CString::new(bytes).unwrap();
   let ptr = c_str.as_ptr();
   std::mem::forget(c_str);
-  return ptr
+  return ptr;
 }
-

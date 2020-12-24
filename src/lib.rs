@@ -16,7 +16,7 @@ pub extern "C" fn score(c: *const c_char) -> *const c_char {
   let get = ureq::get(&req).call();
   // Process response
   let mut bytes = vec![];
-  if get.status().to_string() == "200" {
+  if get.ok() {
     let mut reader = get.into_reader();
     let _ = reader.read_to_end(&mut bytes);
   } else {
